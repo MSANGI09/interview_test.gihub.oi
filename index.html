@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSANGIJR TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0e0f11;
+    --surface: #17191d;
+    --surface2: #1f2228;
+    --border: #2a2d35;
+    --accent: #e8ff47;
+    --accent2: #47c2ff;
+    --text: #f0f1f3;
+    --muted: #7a7f8e;
+    --correct: #3ddc84;
+    --wrong: #ff5c5c;
+    --radius: 14px;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== SETUP SCREEN ===== */
+  #setup-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #setup-screen::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,255,71,0.07) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    pointer-events: none;
+  }
+
+  #setup-screen::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(71,194,255,0.07) 0%, transparent 70%);
+    bottom: -50px; right: -50px;
+    pointer-events: none;
+  }
+
+  .setup-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 52px 48px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    animation: fadeSlideUp 0.6s ease both;
+  }
+
+  .setup-badge {
+    display: inline-block;
+    background: rgba(232,255,71,0.1);
+    border: 1px solid rgba(232,255,71,0.3);
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .setup-title {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+
+  .setup-title span { color: var(--accent); }
+
+  .setup-subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 300;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .setup-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  .setup-label {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    text-align: left;
+  }
+
+  .count-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .count-btn {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.18s;
+    line-height: 1;
+  }
+
+  .count-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(232,255,71,0.08);
+  }
+
+  .count-display {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent);
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .mode-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.18s;
+    text-align: center;
+  }
+
+  .mode-btn .mode-icon { display: block; font-size: 22px; margin-bottom: 6px; }
+
+  .mode-btn.active {
+    background: rgba(232,255,71,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .start-btn {
+    width: 100%;
+    padding: 18px;
+    background: var(--accent);
+    color: #0e0f11;
+    border: none;
+    border-radius: var(--radius);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .start-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .start-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(232,255,71,0.3); }
+  .start-btn:hover::after { opacity: 0.08; }
+  .start-btn:active { transform: translateY(0); }
+
+  /* ===== QUIZ SCREEN ===== */
+  #quiz-screen {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .quiz-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .quiz-logo {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .quiz-logo span { color: var(--accent); }
+
+  .quiz-meta {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .quiz-stat {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .quiz-stat strong {
+    color: var(--text);
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--border);
+    position: relative;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .quiz-body {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    flex: 1;
+    min-height: calc(100vh - 65px);
+  }
+
+  /* Sidebar */
+  .quiz-sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 20px;
+    overflow-y: auto;
+    position: sticky;
+    top: 65px;
+    height: calc(100vh - 65px);
+  }
+
+  .sidebar-heading {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .q-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .q-dot {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.18s;
+  }
+
+  .q-dot:hover { border-color: var(--accent); color: var(--accent); }
+
+  .q-dot.answered {
+    background: rgba(61,220,132,0.12);
+    border-color: var(--correct);
+    color: var(--correct);
+  }
+
+  .q-dot.active {
+    background: rgba(232,255,71,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .legend-dot.answered { background: var(--correct); }
+  .legend-dot.unanswered { background: var(--surface2); border: 1px solid var(--border); }
+  .legend-dot.current { background: var(--accent); }
+
+  /* Main Content */
+  .quiz-main {
+    padding: 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    scroll-margin-top: 20px;
+    transition: border-color 0.2s;
+  }
+
+  .q-card.active-question {
+    border-color: rgba(232,255,71,0.25);
+  }
+
+  .q-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 14px;
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
+  }
+
+  .q-tag-num {
+    width: 24px; height: 24px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .q-text {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+  }
+
+  .option-label:hover {
+    border-color: rgba(232,255,71,0.4);
+    background: rgba(232,255,71,0.05);
+  }
+
+  .option-label input[type="radio"] { display: none; }
+
+  .option-label.selected {
+    border-color: var(--accent);
+    background: rgba(232,255,71,0.08);
+  }
+
+  .option-marker {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: all 0.18s;
+  }
+
+  .option-label.selected .option-marker {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0e0f11;
+  }
+
+  .option-text {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* Quiz Footer */
+  .quiz-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .footer-info {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .footer-info strong {
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  .submit-btn {
+    padding: 14px 36px;
+    background: var(--accent);
+    color: #0e0f11;
+    border: none;
+    border-radius: 12px;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,255,71,0.3); }
+
+  /* ===== RESULT SCREEN ===== */
+  #result-screen {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    background: var(--bg);
+  }
+
+  .result-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .result-header h1 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .retake-btn {
+    padding: 10px 22px;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .retake-btn:hover {
+    background: rgba(232,255,71,0.1);
+  }
+
+  .result-body {
+    padding: 48px 40px;
+    max-width: 860px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .score-hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 48px;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeSlideUp 0.5s ease both;
+  }
+
+  .score-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(232,255,71,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .score-remark {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .remark-excellent { background: rgba(61,220,132,0.15); color: var(--correct); border: 1px solid rgba(61,220,132,0.3); }
+  .remark-good { background: rgba(71,194,255,0.15); color: var(--accent2); border: 1px solid rgba(71,194,255,0.3); }
+  .remark-poor { background: rgba(255,92,92,0.15); color: var(--wrong); border: 1px solid rgba(255,92,92,0.3); }
+
+  .score-big {
+    font-family: var(--font-display);
+    font-size: 80px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .score-big span { color: var(--accent); }
+
+  .score-label {
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 36px;
+  }
+
+  .score-stats {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .stat-block {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat-block:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .stat-num.green { color: var(--correct); }
+  .stat-num.red { color: var(--wrong); }
+  .stat-num.yellow { color: var(--accent); }
+
+  .stat-lbl {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  /* Result Details */
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .result-q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 16px;
+    animation: fadeSlideUp 0.4s ease both;
+  }
+
+  .result-q-card.correct-card { border-left: 3px solid var(--correct); }
+  .result-q-card.wrong-card { border-left: 3px solid var(--wrong); }
+  .result-q-card.skipped-card { border-left: 3px solid var(--muted); }
+
+  .r-q-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .r-q-text {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .r-badge {
+    flex-shrink: 0;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: var(--font-display);
+    letter-spacing: 0.06em;
+  }
+
+  .r-badge.correct { background: rgba(61,220,132,0.15); color: var(--correct); }
+  .r-badge.wrong { background: rgba(255,92,92,0.15); color: var(--wrong); }
+  .r-badge.skipped { background: rgba(122,127,142,0.15); color: var(--muted); }
+
+  .r-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .r-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid transparent;
+  }
+
+  .r-opt.r-correct {
+    background: rgba(61,220,132,0.1);
+    border-color: rgba(61,220,132,0.3);
+    color: var(--correct);
+    font-weight: 500;
+  }
+
+  .r-opt.r-wrong {
+    background: rgba(255,92,92,0.1);
+    border-color: rgba(255,92,92,0.3);
+    color: var(--wrong);
+    font-weight: 500;
+  }
+
+  .r-opt-icon { font-size: 15px; flex-shrink: 0; }
+
+  /* Shared */
+  .hidden { display: none !important; }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .quiz-body { grid-template-columns: 1fr; }
+    .quiz-sidebar { display: none; }
+    .quiz-main { padding: 20px; }
+    .quiz-footer { padding: 16px 20px; flex-wrap: wrap; }
+    .result-body { padding: 28px 20px; }
+    .score-big { font-size: 56px; }
+    .score-stats { flex-wrap: wrap; }
+    .stat-block { min-width: 33%; }
+    .setup-card { padding: 36px 24px; }
+    .mode-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SETUP SCREEN ===== -->
+<div id="setup-screen">
+  <div class="setup-card">
+    <div class="setup-badge">Mi amor❤️</div>
+    <h1 class="setup-title">Test Your<br><span>Knowledge</span></h1>
+    <p class="setup-subtitle">Choose your settings below and challenge yourself with a customised quiz experience.</p>
+
+    <div class="setup-divider"></div>
+
+    <div class="setup-label">Number of Questions</div>
+    <div class="count-control">
+      <button class="count-btn" id="decrementBtn">−</button>
+      <div class="count-display" id="countDisplay">5</div>
+      <button class="count-btn" id="incrementBtn">+</button>
+    </div>
+
+    <div class="setup-label">Question Order</div>
+    <div class="mode-grid">
+      <button class="mode-btn active" data-mode="random">
+        <span class="mode-icon">🔀</span>
+        Random
+      </button>
+      <button class="mode-btn" data-mode="sequential">
+        <span class="mode-icon">📋</span>
+        In Order
+      </button>
+    </div>
+
+    <button class="start-btn" id="startBtn">Start Quiz →</button>
+  </div>
+</div>
+
+<!-- ===== QUIZ SCREEN ===== -->
+<div id="quiz-screen">
+  <header class="quiz-header">
+    <div class="quiz-logo">Mi amor❤️<span>TEST</span></div>
+    <div class="quiz-meta">
+      <div class="quiz-stat">
+        <span>Answered</span>
+        <strong id="answeredCount">0</strong>
+      </div>
+      <div class="quiz-stat">
+        <span>/</span>
+        <strong id="totalCount">0</strong>
+      </div>
+    </div>
+  </header>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+
+  <div class="quiz-body">
+    <aside class="quiz-sidebar">
+      <div class="sidebar-heading">Question Navigator</div>
+      <div class="q-grid" id="sidebarGrid"></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot current"></div> Current</div>
+        <div class="legend-item"><div class="legend-dot answered"></div> Answered</div>
+        <div class="legend-item"><div class="legend-dot unanswered"></div> Unanswered</div>
+      </div>
+    </aside>
+
+    <main class="quiz-main" id="quizMain"></main>
+  </div>
+
+  <footer class="quiz-footer">
+    <div class="footer-info">
+      <strong id="remainingCount">0</strong> questions remaining
+    </div>
+    <button class="submit-btn" id="submitBtn">Submit Quiz</button>
+  </footer>
+</div>
+
+<!-- ===== RESULT SCREEN ===== -->
+<div id="result-screen">
+  <header class="result-header">
+    <h1>Quiz Results</h1>
+    <button class="retake-btn" id="retakeBtn">↩ Retake Quiz</button>
+  </header>
+
+  <div class="result-body">
+    <div class="score-hero">
+      <div class="score-remark" id="remarkBadge"></div>
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-label" id="scoreLabel"></div>
+      <div class="score-stats">
+        <div class="stat-block">
+          <div class="stat-num green" id="statCorrect">0</div>
+          <div class="stat-lbl">Correct</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num red" id="statWrong">0</div>
+          <div class="stat-lbl">Wrong</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num" id="statSkipped">0</div>
+          <div class="stat-lbl">Skipped</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num yellow" id="statPercent">0%</div>
+          <div class="stat-lbl">Score</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Answer Breakdown</div>
+    <div id="detailedResults"></div>
+  </div>
+</div>
+
+<script>
+/* ===============================
+   QUESTION BANK (EDIT HERE)
+   =============================== */
+
+const ALL_QUESTIONS = [
+  {
+    text: "A local government wants to build a new road, but doing so will reduce funds for a health clinic. Which economic problem does this situation illustrate?",
+    options: ["Scarcity", "Inflation", "Unemployment", "Surplus"],
+    correctIndex: 0,
+    explanation: "Resources are limited, so choosing to fund a road reduces funds for health. This illustrates scarcity."
+  },
+  {
+    text: "The municipal council must decide how to allocate a limited budget between water supply and education. This is an example of:",
+    options: ["Opportunity cost", "Money supply management", "Price control", "Market equilibrium"],
+    correctIndex: 0,
+    explanation: "Choosing one option means forgoing the next best alternative, which is opportunity cost."
+  },
+  {
+    text: "A farmer must decide whether to grow maize or beans on the same plot because of limited land. Which principle of economics is demonstrated?",
+    options: ["Scarcity and choice", "Law of demand", "Cost–benefit analysis", "Price elasticity"],
+    correctIndex: 0,
+    explanation: "Limited land forces a choice, showing scarcity and choice."
+  },
+  {
+    text: "A town council wants to increase spending on sanitation but has no additional revenue. What must they do?",
+    options: ["Reallocate existing resources", "Increase imports", "Print more money", "Ignore the issue"],
+    correctIndex: 0,
+    explanation: "With fixed resources, funds must be reallocated."
+  },
+  {
+    text: "A government decides to subsidize fertilizer to encourage maize production. Which economic concept does this reflect?",
+    options: ["Resource allocation", "Market failure", "Inflation control", "Unemployment reduction"],
+    correctIndex: 0,
+    explanation: "The government is directing how resources are used."
+  },
+  {
+    text: "A local authority faces high demand for both roads and hospitals but cannot fund both fully. What type of economic problem is this?",
+    options: ["Scarcity", "Budget surplus", "Overproduction", "Price equilibrium"],
+    correctIndex: 0,
+    explanation: "Limited resources cannot meet all demands."
+  },
+  {
+    text: "A municipal council must prioritize between infrastructure and healthcare. What economic term describes the value of the next best alternative forgone?",
+    options: ["Opportunity cost", "Price index", "Demand elasticity", "Supply curve"],
+    correctIndex: 0,
+    explanation: "Opportunity cost is the value of the next best alternative forgone."
+  },
+  {
+    text: "A local government spends all revenue on education. It cannot improve sanitation. Which economic concept explains this?",
+    options: ["Trade-offs", "Fiscal deficit", "Inflation", "Market failure"],
+    correctIndex: 0,
+    explanation: "Choosing one option requires giving up another."
+  },
+  {
+    text: "A town has limited land. Citizens demand both a park and a school. The council must decide which to build. What core economic problem is illustrated?",
+    options: ["Scarcity", "Surplus", "Inflation", "Budget balancing"],
+    correctIndex: 0,
+    explanation: "Limited land means not all wants can be satisfied."
+  },
+  {
+    text: "A local authority increases taxes to fund more hospitals. What concept explains the need to choose between raising taxes or leaving taxes unchanged?",
+    options: ["Choice under scarcity", "Market equilibrium", "Price control", "Externalities"],
+    correctIndex: 0,
+    explanation: "Limited resources require choices."
+  },
+  {
+    text: "A village council allocates water to households and irrigation. Some households get less water. Which concept is illustrated?",
+    options: ["Allocation of resources", "Inflation targeting", "Trade balance", "Price fixing"],
+    correctIndex: 0,
+    explanation: "Scarce resources must be distributed among competing uses."
+  },
+  {
+    text: "The council must provide electricity or expand roads with the same budget. Which is the opportunity cost of expanding roads?",
+    options: ["Electricity services forgone", "Cost of building roads", "Salaries of engineers", "Taxes collected"],
+    correctIndex: 0,
+    explanation: "Opportunity cost is the next best alternative sacrificed."
+  },
+  {
+    text: "A council must decide between building a clinic now or saving funds for a future hospital. This decision represents:",
+    options: ["Intertemporal choice", "Monetary policy", "Inflation targeting", "Market equilibrium"],
+    correctIndex: 0,
+    explanation: "It involves choosing between present and future benefits."
+  },
+  {
+    text: "Citizens want more recreational facilities and health services, but the council cannot afford both fully. Which concept explains this?",
+    options: ["Scarcity of resources", "Price ceiling", "Demand-supply imbalance", "Monopoly pricing"],
+    correctIndex: 0,
+    explanation: "Resources are limited relative to wants."
+  },
+  {
+    text: "A town uses a fixed budget for education. It cannot fund cultural projects. This illustrates:",
+    options: ["Economic choice", "Budget surplus", "Inflation control", "Price regulation"],
+    correctIndex: 0,
+    explanation: "Limited funds force choices."
+  },
+  {
+    text: "A council must decide to invest in road maintenance or buy new ambulances. Which principle are they applying?",
+    options: ["Opportunity cost", "Price elasticity", "Demand forecasting", "Market failure"],
+    correctIndex: 0,
+    explanation: "Choosing one option sacrifices another."
+  },
+  {
+    text: "A local government is facing high demand for housing and health. They fund housing first. What economic term explains the sacrificed health improvement?",
+    options: ["Trade-off", "Equilibrium", "Elasticity", "Market failure"],
+    correctIndex: 0,
+    explanation: "One goal is sacrificed to achieve another."
+  },
+  {
+    text: "The council has a limited number of teachers. They can assign them to primary or secondary schools. This reflects:",
+    options: ["Scarcity and allocation", "Inflation targeting", "Supply-demand imbalance", "Price control"],
+    correctIndex: 0,
+    explanation: "Teachers are scarce and must be allocated."
+  },
+  {
+    text: "A municipality cannot satisfy all citizen demands for public services due to limited funds. What is the fundamental economic problem?",
+    options: ["Scarcity", "Inflation", "Unemployment", "Surplus"],
+    correctIndex: 0,
+    explanation: "Resources are limited while wants are unlimited."
+  },
+  {
+    text: "A council uses taxes to fund schools, meaning less is available for sanitation. This illustrates:",
+    options: ["Opportunity cost", "Price control", "Market failure", "Demand-supply imbalance"],
+    correctIndex: 0,
+    explanation: "Using resources for one purpose means giving up another."
+  },
+  {
+    text: "A local authority must choose between more police officers or better road infrastructure. What economic principle is being applied?",
+    options: ["Choice under scarcity", "Price elasticity", "Inflation targeting", "Fiscal deficit"],
+    correctIndex: 0,
+    explanation: "Scarcity forces prioritization."
+  },
+  {
+    text: "A council decides to provide clean water to households instead of funding a park. The park’s benefits are the:",
+    options: ["Opportunity cost", "Revenue collected", "Market price", "Tax liability"],
+    correctIndex: 0,
+    explanation: "The forgone park is the opportunity cost."
+  },
+  {
+    text: "Limited resources force a municipality to prioritize sanitation over cultural festivals. Which concept does this demonstrate?",
+    options: ["Scarcity", "Inflation", "Unemployment", "Subsidy"],
+    correctIndex: 0,
+    explanation: "Scarcity requires choosing which wants to satisfy."
+  },
+  {
+    text: "The council wants both new schools and hospitals but cannot afford both fully. This is an example of:",
+    options: ["Economic choice", "Price control", "Surplus", "Fiscal balance"],
+    correctIndex: 0,
+    explanation: "Limited resources force decisions."
+  },
+  {
+    text: "If citizens want more hospitals, roads, and parks but the council has limited funds, the next best option forgone is:",
+    options: ["Opportunity cost", "Price elasticity", "Market failure", "Monetary policy"],
+    correctIndex: 0,
+    explanation: "Opportunity cost is the next best alternative forgone."
+  },
+  {
+    text: "The council can provide either more teachers or more hospital staff, not both. This illustrates:",
+    options: ["Scarcity and trade-offs", "Fiscal deficit", "Inflation targeting", "Price fixing"],
+    correctIndex: 0,
+    explanation: "Limited resources create trade-offs."
+  },
+  {
+    text: "A municipality reallocates funds from cultural activities to health services. This is an example of:",
+    options: ["Resource allocation", "Market failure", "Price control", "Inflation adjustment"],
+    correctIndex: 0,
+    explanation: "Funds are being redirected among competing uses."
+  },
+  {
+    text: "A government wants both free education and healthcare but has a fixed budget. This scenario demonstrates:",
+    options: ["Scarcity", "Surplus", "Price equilibrium", "Monetary policy"],
+    correctIndex: 0,
+    explanation: "Limited resources cannot satisfy unlimited wants."
+  },
+  {
+    text: "The council prioritizes building roads over funding libraries. What is the library project considered?",
+    options: ["Opportunity cost", "Fiscal deficit", "Market equilibrium", "Inflation adjustment"],
+    correctIndex: 0,
+    explanation: "The library is the next best alternative forgone."
+  },
+  {
+    text: "Citizens demand more jobs and more infrastructure. The government can only provide some. This reflects:",
+    options: ["Scarcity and choice", "Price fixing", "Market monopoly", "Inflation"],
+    correctIndex: 0,
+    explanation: "Limited resources require choices."
+  }
+];
+
+/* ===============================
+   SETUP STATE
+   =============================== */
+
+let selectedCount = 5;
+let selectedMode = 'random';
+let activeQuestions = [];
+let answers = {};
+let submitted = false;
+
+const maxQ = ALL_QUESTIONS.length;
+
+/* ===== Setup Controls ===== */
+const countDisplay = document.getElementById('countDisplay');
+const decrementBtn = document.getElementById('decrementBtn');
+const incrementBtn = document.getElementById('incrementBtn');
+const startBtn     = document.getElementById('startBtn');
+const modeButtons  = document.querySelectorAll('.mode-btn');
+
+function clampCount(n) {
+  return Math.max(1, Math.min(maxQ, n));
+}
+
+decrementBtn.onclick = () => {
+  selectedCount = clampCount(selectedCount - 1);
+  countDisplay.textContent = selectedCount;
+};
+
+incrementBtn.onclick = () => {
+  selectedCount = clampCount(selectedCount + 1);
+  countDisplay.textContent = selectedCount;
+};
+
+modeButtons.forEach(btn => {
+  btn.onclick = () => {
+    modeButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedMode = btn.dataset.mode;
+  };
+});
+
+startBtn.onclick = () => {
+  let pool = [...ALL_QUESTIONS];
+
+  if (selectedMode === 'random') {
+    // Fisher-Yates shuffle
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+  }
+
+  activeQuestions = pool.slice(0, selectedCount);
+  answers = {};
+  submitted = false;
+
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'flex';
+
+  renderQuiz();
+};
+
+/* ===============================
+   QUIZ RENDERING
+   =============================== */
+
+function renderQuiz() {
+  document.getElementById('totalCount').textContent = activeQuestions.length;
+  updateProgress();
+  renderSidebar();
+  renderQuestions();
+}
+
+function renderSidebar() {
+  const grid = document.getElementById('sidebarGrid');
+  grid.innerHTML = '';
+  activeQuestions.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'q-dot';
+    dot.textContent = i + 1;
+    dot.onclick = () => {
+      document.getElementById('qcard-' + i).scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // highlight active
+      document.querySelectorAll('.q-dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+    };
+    dot.id = 'qdot-' + i;
+    grid.appendChild(dot);
+  });
+}
+
+const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+function renderQuestions() {
+  const main = document.getElementById('quizMain');
+  main.innerHTML = '';
+
+  activeQuestions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + qi;
+
+    let optionsHTML = '';
+    q.options.forEach((opt, oi) => {
+      optionsHTML += `
+        <label class="option-label" id="opt-${qi}-${oi}">
+          <input type="radio" name="q${qi}" value="${oi}">
+          <div class="option-marker">${LETTERS[oi]}</div>
+          <span class="option-text">${opt}</span>
+        </label>
+      `;
+    });
+
+    card.innerHTML = `
+      <div class="q-tag">
+        <div class="q-tag-num">${qi + 1}</div>
+        Question ${qi + 1} of ${activeQuestions.length}
+      </div>
+      <div class="q-text">${q.text}</div>
+      <div class="options-list">${optionsHTML}</div>
+    `;
+
+    main.appendChild(card);
+  });
+
+  // Intersection observer to highlight sidebar dot
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id.replace('qcard-', '');
+        document.querySelectorAll('.q-dot').forEach(d => d.classList.remove('active'));
+        const dot = document.getElementById('qdot-' + id);
+        if (dot) dot.classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.q-card').forEach(c => observer.observe(c));
+
+  // Event delegation for option selection
+  main.addEventListener('change', (e) => {
+    if (submitted) return;
+    if (!e.target.matches('input[type="radio"]')) return;
+
+    const qi = parseInt(e.target.name.replace('q', ''));
+    const val = parseInt(e.target.value);
+    answers[qi] = val;
+
+    // Update visual selection
+    document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach(lbl => lbl.classList.remove('selected'));
+    document.getElementById(`opt-${qi}-${val}`).classList.add('selected');
+
+    updateProgress();
+    updateSidebar();
+  });
+}
+
+function updateProgress() {
+  const answered = Object.keys(answers).length;
+  const total = activeQuestions.length;
+  const pct = total > 0 ? (answered / total) * 100 : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('answeredCount').textContent = answered;
+  document.getElementById('remainingCount').textContent = total - answered;
+}
+
+function updateSidebar() {
+  activeQuestions.forEach((_, i) => {
+    const dot = document.getElementById('qdot-' + i);
+    if (!dot) return;
+    if (answers[i] !== undefined) dot.classList.add('answered');
+    else dot.classList.remove('answered');
+  });
+}
+
+/* ===============================
+   SUBMISSION
+   =============================== */
+
+document.getElementById('submitBtn').onclick = () => {
+  if (submitted) return;
+
+  const unanswered = activeQuestions.length - Object.keys(answers).length;
+  if (unanswered > 0) {
+    const go = confirm(`You have ${unanswered} unanswered question${unanswered > 1 ? 's' : ''}. Submit anyway?`);
+    if (!go) return;
+  }
+
+  submitted = true;
+  showResults();
+};
+
+/* ===============================
+   RESULTS
+   =============================== */
+
+function showResults() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  const rs = document.getElementById('result-screen');
+  rs.style.display = 'flex';
+
+  let correct = 0, wrong = 0, skipped = 0;
+
+  activeQuestions.forEach((q, i) => {
+    if (answers[i] === undefined) skipped++;
+    else if (answers[i] === q.correctIndex) correct++;
+    else wrong++;
+  });
+
+  const total = activeQuestions.length;
+  const pct = Math.round((correct / total) * 100);
+
+  document.getElementById('scoreBig').innerHTML = `${correct}<span>/${total}</span>`;
+  document.getElementById('scoreLabel').textContent = `You scored ${pct}% on this quiz`;
+  document.getElementById('statCorrect').textContent = correct;
+  document.getElementById('statWrong').textContent = wrong;
+  document.getElementById('statSkipped').textContent = skipped;
+  document.getElementById('statPercent').textContent = pct + '%';
+
+  const badge = document.getElementById('remarkBadge');
+  if (pct >= 80) {
+    badge.textContent = '🏆 Excellent';
+    badge.className = 'score-remark remark-excellent';
+  } else if (pct >= 50) {
+    badge.textContent = '👍 Good Effort';
+    badge.className = 'score-remark remark-good';
+  } else {
+    badge.textContent = '📚 Needs Improvement';
+    badge.className = 'score-remark remark-poor';
+  }
+
+  // Detailed breakdown
+  const container = document.getElementById('detailedResults');
+  container.innerHTML = '';
+
+  activeQuestions.forEach((q, i) => {
+    const userAns = answers[i];
+    const isCorrect = userAns === q.correctIndex;
+    const isSkipped = userAns === undefined;
+
+    const card = document.createElement('div');
+    card.className = `result-q-card ${isSkipped ? 'skipped-card' : isCorrect ? 'correct-card' : 'wrong-card'}`;
+    card.style.animationDelay = (i * 0.06) + 's';
+
+    const badgeText = isSkipped ? 'Skipped' : isCorrect ? 'Correct' : 'Wrong';
+    const badgeCls  = isSkipped ? 'skipped' : isCorrect ? 'correct' : 'wrong';
+
+    let optsHTML = '';
+    q.options.forEach((opt, oi) => {
+      let cls = '', icon = '';
+      if (oi === q.correctIndex) { cls = 'r-correct'; icon = '✓'; }
+      else if (oi === userAns && !isCorrect) { cls = 'r-wrong'; icon = '✗'; }
+      else { icon = LETTERS[oi]; }
+
+      optsHTML += `
+        <div class="r-opt ${cls}">
+          <span class="r-opt-icon">${icon}</span>
+          ${opt}
+        </div>
+      `;
+    });
+
+    card.innerHTML = `
+      <div class="r-q-header">
+        <div class="r-q-text">${i + 1}. ${q.text}</div>
+        <div class="r-badge ${badgeCls}">${badgeText}</div>
+      </div>
+      <div class="r-options">${optsHTML}</div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+document.getElementById('retakeBtn').onclick = () => {
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('setup-screen').style.display = 'flex';
+  answers = {};
+  submitted = false;
+};
+</script>
+</body>
+</html>
