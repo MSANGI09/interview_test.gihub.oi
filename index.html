@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MSANGIJR TEST</title>
+<title>QuizMaster Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -752,6 +752,41 @@
 
   .r-opt-icon { font-size: 15px; flex-shrink: 0; }
 
+  /* Explanation Box */
+  .r-explanation {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: rgba(255, 200, 60, 0.07);
+    border: 1px solid rgba(255, 200, 60, 0.25);
+    border-radius: 12px;
+    animation: fadeSlideUp 0.4s ease both;
+  }
+
+  .r-explanation-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .r-explanation-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f5c842;
+    margin-bottom: 5px;
+  }
+
+  .r-explanation-text {
+    font-size: 13.5px;
+    color: #d4b96a;
+    line-height: 1.65;
+  }
+
   /* Shared */
   .hidden { display: none !important; }
 
@@ -780,9 +815,9 @@
 <!-- ===== SETUP SCREEN ===== -->
 <div id="setup-screen">
   <div class="setup-card">
-    <div class="setup-badge">Mi amor❤️</div>
+    <div class="setup-badge"> Mi amor ❤️</div>
     <h1 class="setup-title">Test Your<br><span>Knowledge</span></h1>
-    <p class="setup-subtitle">Choose your settings below and challenge yourself with a customised quiz experience.</p>
+    <p class="setup-subtitle">Choose your settings below and challenge yourself with a  60 customised quiz experience.</p>
 
     <div class="setup-divider"></div>
 
@@ -812,7 +847,7 @@
 <!-- ===== QUIZ SCREEN ===== -->
 <div id="quiz-screen">
   <header class="quiz-header">
-    <div class="quiz-logo">Mi amor❤️<span>TEST</span></div>
+    <div class="quiz-logo">Mi amor <span> ❤️</span></div>
     <div class="quiz-meta">
       <div class="quiz-stat">
         <span>Answered</span>
@@ -894,186 +929,531 @@
 
 const ALL_QUESTIONS = [
   {
-    text: "A local government wants to build a new road, but doing so will reduce funds for a health clinic. Which economic problem does this situation illustrate?",
-    options: ["Scarcity", "Inflation", "Unemployment", "Surplus"],
+    text: "A district council decides to delay building a market this year in order to repair flood-damaged roads, even though the market would generate future revenue. Which economic reasoning best explains this decision?",
+    options: [
+      "Expansionary fiscal policy",
+      "Maximization of current utility under resource constraints",
+      "Market equilibrium adjustment",
+      "Long-run demand stabilization policy"
+    ],
+    correctIndex: 1,
+    explanation: "The council selects the option with the highest immediate benefit given limited resources. This reflects utility maximization under scarcity, not fiscal or market equilibrium policy."
+  },
+  {
+    text: "A local authority states: “We cannot satisfy all demands today, so we must rank priorities based on urgency and impact.” This statement best reflects economics as the study of:",
+    options: [
+      "Market price determination",
+      "Revenue mobilization techniques",
+      "Allocation of scarce resources among competing ends",
+      "Wealth accumulation"
+    ],
+    correctIndex: 2,
+    explanation: "Economics fundamentally studies how scarce resources are allocated among competing wants, which is exactly what prioritization implies."
+  },
+  {
+    text: "A municipality chooses to invest in clean water supply instead of expanding office buildings because clean water improves health and productivity. This choice reflects:",
+    options: [
+      "Positive economic analysis",
+      "Purely political decision-making",
+      "Normative economic judgment",
+      "Price elasticity reasoning"
+    ],
+    correctIndex: 2,
+    explanation: "The choice involves a value judgment about what ought to be prioritized (health and productivity), which is normative economics."
+  },
+  {
+    text: "A council economist advises against funding all proposed projects, arguing that resources used in one project cannot be used elsewhere. This reasoning emphasizes:",
+    options: [
+      "Demand-side economics",
+      "Market price distortion",
+      "Opportunity cost principle",
+      "Budget deficit control"
+    ],
+    correctIndex: 2,
+    explanation: "Using resources for one project means forgoing others, which is the definition of opportunity cost."
+  },
+  {
+    text: "A district faces unlimited community demands but has a legally fixed annual budget. From an economic perspective, the budget constraint primarily forces the council to:",
+    options: [
+      "Rely on donor funding",
+      "Prioritize and choose among alternatives",
+      "Increase taxation automatically",
+      "Eliminate all non-essential services"
+    ],
+    correctIndex: 1,
+    explanation: "A budget constraint requires choosing among competing alternatives; it does not automatically imply higher taxes or donor dependence."
+  },
+  {
+    text: "A town council postpones cultural festivals to fund emergency health services. Economically, the postponed festival represents:",
+    options: [
+      "A marginal benefit",
+      "An opportunity cost",
+      "A public good",
+      "A sunk cost"
+    ],
+    correctIndex: 1,
+    explanation: "The postponed festival is the next best alternative forgone, which defines opportunity cost."
+  },
+  {
+    text: "An economist argues that even free public services have costs because resources used could serve other needs. This argument highlights that:",
+    options: [
+      "Prices always reflect value",
+      "Scarcity applies to all economic systems",
+      "Governments should not intervene",
+      "Public goods are inefficient"
+    ],
+    correctIndex: 1,
+    explanation: "Scarcity exists regardless of whether services are free or paid for; resources always have alternative uses."
+  },
+  {
+    text: "A council prioritizes flood control over building new offices because floods cause widespread losses. This reflects decision-making based on:",
+    options: [
+      "Cost benefit reasoning under scarcity",
+      "Comparative advantage",
+      "Demand elasticity",
+      "Price mechanism efficiency"
+    ],
     correctIndex: 0,
-    explanation: "Resources are limited, so choosing to fund a road reduces funds for health. This illustrates scarcity."
+    explanation: "The council compares the costs and benefits of alternative uses of scarce resources, which is cost–benefit reasoning."
+  },
+  {
+    text: "A policy analyst states: “Even if we increase funding, some demands will remain unmet.” This statement reflects which economic reality?",
+    options: [
+      "Market disequilibrium",
+      "Scarcity of resources relative to wants",
+      "Poor revenue collection",
+      "Inefficiency in government"
+    ],
+    correctIndex: 1,
+    explanation: "Because wants are unlimited and resources are limited, scarcity ensures some needs remain unmet."
+  },
+  {
+    text: "A district chooses projects that benefit the largest number of people with limited funds. This approach reflects:",
+    options: [
+      "Monetary expansion",
+      "Efficiency driven allocation",
+      "Equity based allocation only",
+      "Inflation control policy"
+    ],
+    correctIndex: 1,
+    explanation: "Efficiency-driven allocation aims to maximize total benefit from scarce resources."
+  },
+
+
+  {
+    text: "A council economist differentiates between “what is happening” and “what should be done.” This distinction separates:",
+    options: [
+      "Short-run and long-run analysis",
+      "Demand and supply analysis",
+      "Positive and normative economics",
+      "Micro and macroeconomics"
+    ],
+    correctIndex: 2,
+    explanation: "Positive economics describes facts and relationships, while normative economics involves value judgments about what ought to be done."
+  },
+  {
+    text: "A local government chooses a project that yields moderate benefits now instead of one with higher benefits far in the future. This is an example of:",
+    options: [
+      "Fiscal neutrality",
+      "Intertemporal choice",
+      "Market signaling",
+      "Inflation targeting"
+    ],
+    correctIndex: 1,
+    explanation: "Intertemporal choice involves decisions that trade off benefits across different time periods."
+  },
+  {
+    text: "A council rejects a proposal because the same funds could improve healthcare and education simultaneously. This reasoning is based on:",
+    options: [
+      "Market equilibrium logic",
+      "Tax incidence",
+      "Opportunity cost comparison",
+      "Price ceiling analysis"
+    ],
+    correctIndex: 2,
+    explanation: "The council compares alternative uses of the same scarce resources, which is opportunity cost reasoning."
+  },
+  {
+    text: "An economist notes that economic problems arise not because resources are absolutely scarce, but because they have alternative uses. This emphasizes:",
+    options: [
+      "Relative scarcity",
+      "Unlimited wants only",
+      "Production inefficiency",
+      "Inflationary pressure"
+    ],
+    correctIndex: 0,
+    explanation: "Scarcity is relative because resources have alternative uses, not because they are completely absent."
+  },
+  {
+    text: "A district must choose between quality improvement and quantity expansion of services with fixed resources. This situation best illustrates:",
+    options: [
+      "Market failure",
+      "Demand elasticity",
+      "Trade offs under scarcity",
+      "Marginal analysis"
+    ],
+    correctIndex: 2,
+    explanation: "With limited resources, improving one aspect requires sacrificing another, which defines a trade-off."
+  },
+  {
+    text: "A policymaker says, “There is no free project; every decision has a cost.” Economically, this refers to:",
+    options: [
+      "Tax incidence",
+      "Opportunity cost",
+      "Fiscal burden",
+      "Public expenditure"
+    ],
+    correctIndex: 1,
+    explanation: "Every choice involves giving up the next best alternative, which is opportunity cost."
+  },
+  {
+    text: "A local authority prioritizes disaster response over long-term infrastructure. This reflects:",
+    options: [
+      "Excess supply",
+      "Rational choice under constraints",
+      "Market price distortion",
+      "Inefficient planning"
+    ],
+    correctIndex: 1,
+    explanation: "Rational choice involves selecting the most urgent option given limited resources and constraints."
+  },
+  {
+    text: "A council economist argues that increasing services without increasing resources is impossible. This is because:",
+    options: [
+      "Taxes are fixed",
+      "Resources are scarce",
+      "Markets are inefficient",
+      "Demand is infinite"
+    ],
+    correctIndex: 1,
+    explanation: "Scarcity limits the amount of goods and services that can be provided."
+  },
+  {
+    text: "A local government ranks projects by urgency, cost, and impact before funding. This process reflects economics as:",
+    options: [
+      "A purely mathematical discipline",
+      "A decision-making science",
+      "Political science",
+      "A legal framework"
+    ],
+    correctIndex: 1,
+    explanation: "Economics provides tools for rational decision-making under constraints."
+  },
+  {
+    text: "A municipality must choose between urban and rural projects due to limited funds. The unchosen projects represent:",
+    options: [
+      "Market surplus",
+      "Marginal revenue",
+      "Opportunity cost",
+      "Deadweight loss"
+    ],
+    correctIndex: 2,
+    explanation: "Forgone alternatives are opportunity costs."
+  },
+  {
+    text: "An economist explains that even public services must be rationed. This implies:",
+    options: [
+      "Prices are ineffective",
+      "Scarcity applies to public goods",
+      "Markets dominate government",
+      "Government failure"
+    ],
+    correctIndex: 1,
+    explanation: "Scarcity applies to all goods, including public services."
+  },
+  {
+    text: "A council uses evidence to decide which project yields greater social benefit. This reflects economics as:",
+    options: [
+      "A political ideology",
+      "An applied social science",
+      "A legal instrument",
+      "A moral science"
+    ],
+    correctIndex: 1,
+    explanation: "Economics applies social science methods to real-world decision-making."
+  },
+  {
+    text: "A local authority’s inability to meet all demands is not due to mismanagement but to economic reality. That reality is:",
+    options: [
+      "Monopoly power",
+      "Externalities",
+      "Scarcity",
+      "Inflation"
+    ],
+    correctIndex: 2,
+    explanation: "Scarcity exists regardless of management quality."
+  },
+  {
+    text: "A policymaker says, “We must decide what to produce, how to produce, and for whom.” This summarizes:",
+    options: [
+      "Fiscal policy goals",
+      "Fundamental economic questions",
+      "Market regulation",
+      "Macroeconomic policy"
+    ],
+    correctIndex: 1,
+    explanation: "These are the classic fundamental economic questions."
+  },
+  {
+    text: "A council economist states that prioritization is unavoidable even in wealthy regions. This implies:",
+    options: [
+      "Markets always fail",
+      "Scarcity is universal",
+      "Growth eliminates choice",
+      "Public finance is inefficient"
+    ],
+    correctIndex: 1,
+    explanation: "Wants expand with resources, making scarcity universal."
+  },
+  {
+    text: "A district allocates funds based on social impact rather than political pressure. This demonstrates:",
+    options: [
+      "Fiscal imbalance",
+      "Rational economic decision-making",
+      "Monetary stabilization",
+      "Market price determination"
+    ],
+    correctIndex: 1,
+    explanation: "Rational decision-making allocates scarce resources to maximize total benefit."
+  },
+  {
+    text: "A local authority refuses to approve all proposals despite political pressure. Economically, this shows:",
+    options: [
+      "Market distortion",
+      "Resource constraint awareness",
+      "Demand elasticity",
+      "Budget surplus"
+    ],
+    correctIndex: 1,
+    explanation: "Awareness of limited resources forces disciplined choices."
+  },
+  {
+    text: "An economist warns that “doing everything means doing nothing well.” This statement highlights:",
+    options: [
+      "Market concentration",
+      "Trade-offs due to scarcity",
+      "Economies of scale",
+      "Inflationary effects"
+    ],
+    correctIndex: 1,
+    explanation: "Scarce resources spread too thin reduce effectiveness, illustrating trade-offs."
+  },
+  {
+    text: "A council chooses projects with the highest benefit per unit of cost. This reflects:",
+    options: [
+      "Tax incidence",
+      "Marginal analysis",
+      "Price regulation",
+      "Market equilibrium"
+    ],
+    correctIndex: 1,
+    explanation: "Marginal analysis compares additional benefits to additional costs."
+  },
+  {
+    text: "A policymaker argues that economics is relevant because resources are limited, but needs keep expanding. This defines economics primarily as the study of:",
+    options: [
+      "Income distribution",
+      "Market pricing",
+      "Scarcity and choice",
+      "Wealth creation"
+    ],
+    correctIndex: 2,
+    explanation: "Economics fundamentally studies scarcity and the choices it forces."
+  },
+
+
+ {
+    text: "A local government wants to build a new road, but doing so will reduce funds for a health clinic. Which economic problem does this situation illustrate?",
+    options: ["Inflation", "Scarcity", "Surplus", "Unemployment"],
+    correctIndex: 1,
+    explanation: "Resources are limited, so funding one project reduces funds for another. This is scarcity."
   },
   {
     text: "The municipal council must decide how to allocate a limited budget between water supply and education. This is an example of:",
-    options: ["Opportunity cost", "Money supply management", "Price control", "Market equilibrium"],
-    correctIndex: 0,
-    explanation: "Choosing one option means forgoing the next best alternative, which is opportunity cost."
+    options: ["Money supply management", "Opportunity cost", "Market equilibrium", "Price control"],
+    correctIndex: 1,
+    explanation: "Choosing one option means giving up the next best alternative, which defines opportunity cost."
   },
   {
-    text: "A farmer must decide whether to grow maize or beans on the same plot because of limited land. Which principle of economics is demonstrated?",
-    options: ["Scarcity and choice", "Law of demand", "Cost–benefit analysis", "Price elasticity"],
-    correctIndex: 0,
-    explanation: "Limited land forces a choice, showing scarcity and choice."
+    text: "A farmer must decide whether to grow maize or beans on the same plot because of limited land. Which principle is demonstrated?",
+    options: ["Law of demand", "Scarcity and choice", "Price elasticity", "Cost benefit analysis"],
+    correctIndex: 1,
+    explanation: "Limited land forces a choice between alternatives, showing scarcity and choice."
   },
   {
     text: "A town council wants to increase spending on sanitation but has no additional revenue. What must they do?",
-    options: ["Reallocate existing resources", "Increase imports", "Print more money", "Ignore the issue"],
-    correctIndex: 0,
-    explanation: "With fixed resources, funds must be reallocated."
+    options: ["Increase imports", "Ignore the issue", "Print more money", "Reallocate existing resources"],
+    correctIndex: 3,
+    explanation: "With a fixed budget, increasing spending in one area requires reallocating resources."
   },
   {
-    text: "A government decides to subsidize fertilizer to encourage maize production. Which economic concept does this reflect?",
-    options: ["Resource allocation", "Market failure", "Inflation control", "Unemployment reduction"],
-    correctIndex: 0,
-    explanation: "The government is directing how resources are used."
+    text: "A government decides to subsidize fertilizer to encourage maize production. Which concept does this reflect?",
+    options: ["Inflation control", "Resource allocation", "Unemployment reduction", "Market failure"],
+    correctIndex: 1,
+    explanation: "Subsidies influence how scarce resources are allocated."
   },
   {
-    text: "A local authority faces high demand for both roads and hospitals but cannot fund both fully. What type of economic problem is this?",
-    options: ["Scarcity", "Budget surplus", "Overproduction", "Price equilibrium"],
-    correctIndex: 0,
-    explanation: "Limited resources cannot meet all demands."
+    text: "A local authority faces high demand for both roads and hospitals but cannot fund both fully. What type of problem is this?",
+    options: ["Overproduction", "Scarcity", "Budget surplus", "Price equilibrium"],
+    correctIndex: 1,
+    explanation: "Limited resources cannot satisfy all wants, which defines scarcity."
   },
   {
-    text: "A municipal council must prioritize between infrastructure and healthcare. What economic term describes the value of the next best alternative forgone?",
-    options: ["Opportunity cost", "Price index", "Demand elasticity", "Supply curve"],
-    correctIndex: 0,
+    text: "A municipal council must prioritize between infrastructure and healthcare. What term describes the next best alternative forgone?",
+    options: ["Supply curve", "Price index", "Opportunity cost", "Demand elasticity"],
+    correctIndex: 2,
+    explanation: "Opportunity cost is the value of the next best alternative sacrificed."
+  },
+  {
+    text: "A local government spends all revenue on education and cannot improve sanitation. Which concept explains this?",
+    options: ["Inflation", "Trade-offs", "Fiscal deficit", "Market failure"],
+    correctIndex: 1,
+    explanation: "Choosing one option requires sacrificing another due to limited resources."
+  },
+  {
+    text: "A town has limited land and must choose between a park and a school. What core economic problem is illustrated?",
+    options: ["Budget balancing", "Inflation", "Scarcity", "Surplus"],
+    correctIndex: 2,
+    explanation: "Limited land cannot satisfy all wants, illustrating scarcity."
+  },
+  {
+    text: "A local authority increases taxes to fund more hospitals. What concept explains this choice?",
+    options: ["Externalities", "Choice under scarcity", "Market equilibrium", "Price control"],
+    correctIndex: 1,
+    explanation: "Limited resources require choices, such as raising taxes or reallocating funds."
+  },
+  {
+    text: "A village council allocates water to households and irrigation. Which concept is illustrated?",
+    options: ["Trade balance", "Price fixing", "Allocation of resources", "Inflation targeting"],
+    correctIndex: 2,
+    explanation: "The council distributes scarce water among competing uses."
+  },
+  {
+    text: "The council expands roads instead of electricity services. What is the opportunity cost?",
+    options: ["Cost of roads", "Taxes collected", "Electricity services forgone", "Engineer salaries"],
+    correctIndex: 2,
     explanation: "Opportunity cost is the value of the next best alternative forgone."
   },
   {
-    text: "A local government spends all revenue on education. It cannot improve sanitation. Which economic concept explains this?",
-    options: ["Trade-offs", "Fiscal deficit", "Inflation", "Market failure"],
-    correctIndex: 0,
-    explanation: "Choosing one option requires giving up another."
+    text: "A council chooses between building a clinic now or saving for a future hospital. This represents:",
+    options: ["Market equilibrium", "Intertemporal choice", "Monetary policy", "Inflation targeting"],
+    correctIndex: 1,
+    explanation: "Intertemporal choice involves decisions across time."
   },
   {
-    text: "A town has limited land. Citizens demand both a park and a school. The council must decide which to build. What core economic problem is illustrated?",
-    options: ["Scarcity", "Surplus", "Inflation", "Budget balancing"],
-    correctIndex: 0,
-    explanation: "Limited land means not all wants can be satisfied."
-  },
-  {
-    text: "A local authority increases taxes to fund more hospitals. What concept explains the need to choose between raising taxes or leaving taxes unchanged?",
-    options: ["Choice under scarcity", "Market equilibrium", "Price control", "Externalities"],
-    correctIndex: 0,
-    explanation: "Limited resources require choices."
-  },
-  {
-    text: "A village council allocates water to households and irrigation. Some households get less water. Which concept is illustrated?",
-    options: ["Allocation of resources", "Inflation targeting", "Trade balance", "Price fixing"],
-    correctIndex: 0,
-    explanation: "Scarce resources must be distributed among competing uses."
-  },
-  {
-    text: "The council must provide electricity or expand roads with the same budget. Which is the opportunity cost of expanding roads?",
-    options: ["Electricity services forgone", "Cost of building roads", "Salaries of engineers", "Taxes collected"],
-    correctIndex: 0,
-    explanation: "Opportunity cost is the next best alternative sacrificed."
-  },
-  {
-    text: "A council must decide between building a clinic now or saving funds for a future hospital. This decision represents:",
-    options: ["Intertemporal choice", "Monetary policy", "Inflation targeting", "Market equilibrium"],
-    correctIndex: 0,
-    explanation: "It involves choosing between present and future benefits."
-  },
-  {
-    text: "Citizens want more recreational facilities and health services, but the council cannot afford both fully. Which concept explains this?",
-    options: ["Scarcity of resources", "Price ceiling", "Demand-supply imbalance", "Monopoly pricing"],
-    correctIndex: 0,
+    text: "Citizens want more recreation and health services, but the council cannot afford both. Which concept explains this?",
+    options: ["Price ceiling", "Scarcity of resources", "Demand-supply imbalance", "Monopoly pricing"],
+    correctIndex: 1,
     explanation: "Resources are limited relative to wants."
   },
   {
-    text: "A town uses a fixed budget for education. It cannot fund cultural projects. This illustrates:",
-    options: ["Economic choice", "Budget surplus", "Inflation control", "Price regulation"],
-    correctIndex: 0,
-    explanation: "Limited funds force choices."
+    text: "A town uses a fixed education budget and cannot fund cultural projects. This illustrates:",
+    options: ["Inflation control", "Economic choice", "Price regulation", "Budget surplus"],
+    correctIndex: 1,
+    explanation: "Limited resources force economic choices."
   },
   {
-    text: "A council must decide to invest in road maintenance or buy new ambulances. Which principle are they applying?",
-    options: ["Opportunity cost", "Price elasticity", "Demand forecasting", "Market failure"],
-    correctIndex: 0,
+    text: "A council must invest in road maintenance or buy ambulances. Which principle applies?",
+    options: ["Demand forecasting", "Opportunity cost", "Market failure", "Price elasticity"],
+    correctIndex: 1,
     explanation: "Choosing one option sacrifices another."
   },
   {
-    text: "A local government is facing high demand for housing and health. They fund housing first. What economic term explains the sacrificed health improvement?",
-    options: ["Trade-off", "Equilibrium", "Elasticity", "Market failure"],
-    correctIndex: 0,
-    explanation: "One goal is sacrificed to achieve another."
+    text: "A government funds housing instead of healthcare. The sacrificed healthcare is a:",
+    options: ["Market failure", "Trade-off", "Equilibrium", "Elasticity"],
+    correctIndex: 1,
+    explanation: "Trade-offs occur when one goal is sacrificed for another."
   },
   {
-    text: "The council has a limited number of teachers. They can assign them to primary or secondary schools. This reflects:",
-    options: ["Scarcity and allocation", "Inflation targeting", "Supply-demand imbalance", "Price control"],
-    correctIndex: 0,
+    text: "A council assigns limited teachers to primary or secondary schools. This reflects:",
+    options: ["Supply-demand imbalance", "Scarcity and allocation", "Inflation targeting", "Price control"],
+    correctIndex: 1,
     explanation: "Teachers are scarce and must be allocated."
   },
   {
-    text: "A municipality cannot satisfy all citizen demands for public services due to limited funds. What is the fundamental economic problem?",
-    options: ["Scarcity", "Inflation", "Unemployment", "Surplus"],
-    correctIndex: 0,
-    explanation: "Resources are limited while wants are unlimited."
+    text: "A municipality cannot satisfy all service demands due to limited funds. What is the fundamental problem?",
+    options: ["Unemployment", "Surplus", "Scarcity", "Inflation"],
+    correctIndex: 2,
+    explanation: "Scarcity arises from unlimited wants and limited resources."
   },
   {
-    text: "A council uses taxes to fund schools, meaning less is available for sanitation. This illustrates:",
-    options: ["Opportunity cost", "Price control", "Market failure", "Demand-supply imbalance"],
-    correctIndex: 0,
-    explanation: "Using resources for one purpose means giving up another."
+    text: "Taxes are used to fund schools, leaving less for sanitation. This illustrates:",
+    options: ["Market failure", "Opportunity cost", "Price control", "Demand imbalance"],
+    correctIndex: 1,
+    explanation: "Allocating funds to one use means sacrificing another."
   },
   {
-    text: "A local authority must choose between more police officers or better road infrastructure. What economic principle is being applied?",
-    options: ["Choice under scarcity", "Price elasticity", "Inflation targeting", "Fiscal deficit"],
-    correctIndex: 0,
-    explanation: "Scarcity forces prioritization."
+    text: "A local authority chooses between police officers and road infrastructure. Which principle applies?",
+    options: ["Fiscal deficit", "Choice under scarcity", "Price elasticity", "Inflation targeting"],
+    correctIndex: 1,
+    explanation: "Scarcity forces choices between alternatives."
   },
   {
-    text: "A council decides to provide clean water to households instead of funding a park. The park’s benefits are the:",
-    options: ["Opportunity cost", "Revenue collected", "Market price", "Tax liability"],
-    correctIndex: 0,
-    explanation: "The forgone park is the opportunity cost."
+    text: "A council provides clean water instead of building a park. The park’s benefit is the:",
+    options: ["Market price", "Tax liability", "Opportunity cost", "Revenue collected"],
+    correctIndex: 2,
+    explanation: "Opportunity cost is the value of the forgone alternative."
   },
   {
-    text: "Limited resources force a municipality to prioritize sanitation over cultural festivals. Which concept does this demonstrate?",
-    options: ["Scarcity", "Inflation", "Unemployment", "Subsidy"],
-    correctIndex: 0,
-    explanation: "Scarcity requires choosing which wants to satisfy."
+    text: "Limited resources force sanitation to be prioritized over festivals. Which concept is shown?",
+    options: ["Unemployment", "Scarcity", "Inflation", "Subsidy"],
+    correctIndex: 1,
+    explanation: "Scarcity requires prioritization."
   },
   {
-    text: "The council wants both new schools and hospitals but cannot afford both fully. This is an example of:",
-    options: ["Economic choice", "Price control", "Surplus", "Fiscal balance"],
-    correctIndex: 0,
-    explanation: "Limited resources force decisions."
+    text: "The council wants new schools and hospitals but cannot afford both. This is an example of:",
+    options: ["Surplus", "Economic choice", "Fiscal balance", "Price control"],
+    correctIndex: 1,
+    explanation: "Economic choice arises from limited resources."
   },
   {
-    text: "If citizens want more hospitals, roads, and parks but the council has limited funds, the next best option forgone is:",
-    options: ["Opportunity cost", "Price elasticity", "Market failure", "Monetary policy"],
+    text: "Citizens want hospitals, roads, and parks, but funds are limited. The next best option forgone is:",
+    options: ["Opportunity cost", "Market failure", "Monetary policy", "Price elasticity"],
     correctIndex: 0,
-    explanation: "Opportunity cost is the next best alternative forgone."
+    explanation: "The next best alternative forgone defines opportunity cost."
   },
   {
-    text: "The council can provide either more teachers or more hospital staff, not both. This illustrates:",
-    options: ["Scarcity and trade-offs", "Fiscal deficit", "Inflation targeting", "Price fixing"],
-    correctIndex: 0,
+    text: "The council can hire teachers or hospital staff, not both. This illustrates:",
+    options: ["Fiscal deficit", "Scarcity and trade-offs", "Inflation targeting", "Price fixing"],
+    correctIndex: 1,
     explanation: "Limited resources create trade-offs."
   },
   {
-    text: "A municipality reallocates funds from cultural activities to health services. This is an example of:",
-    options: ["Resource allocation", "Market failure", "Price control", "Inflation adjustment"],
-    correctIndex: 0,
-    explanation: "Funds are being redirected among competing uses."
+    text: "Funds are reallocated from cultural activities to health services. This is:",
+    options: ["Inflation adjustment", "Market failure", "Resource allocation", "Price control"],
+    correctIndex: 2,
+    explanation: "Choosing how scarce resources are used is allocation."
   },
   {
-    text: "A government wants both free education and healthcare but has a fixed budget. This scenario demonstrates:",
-    options: ["Scarcity", "Surplus", "Price equilibrium", "Monetary policy"],
-    correctIndex: 0,
+    text: "A government wants free education and healthcare but has a fixed budget. This shows:",
+    options: ["Price equilibrium", "Surplus", "Scarcity", "Monetary policy"],
+    correctIndex: 2,
     explanation: "Limited resources cannot satisfy unlimited wants."
   },
   {
-    text: "The council prioritizes building roads over funding libraries. What is the library project considered?",
-    options: ["Opportunity cost", "Fiscal deficit", "Market equilibrium", "Inflation adjustment"],
-    correctIndex: 0,
-    explanation: "The library is the next best alternative forgone."
+    text: "Roads are built instead of libraries. The library project is the:",
+    options: ["Fiscal deficit", "Opportunity cost", "Market equilibrium", "Inflation adjustment"],
+    correctIndex: 1,
+    explanation: "The forgone library is the opportunity cost."
   },
   {
-    text: "Citizens demand more jobs and more infrastructure. The government can only provide some. This reflects:",
-    options: ["Scarcity and choice", "Price fixing", "Market monopoly", "Inflation"],
+    text: "Citizens demand more jobs and infrastructure, but only some can be provided. This reflects:",
+    options: ["Scarcity and choice", "Market monopoly", "Price fixing", "Inflation"],
     correctIndex: 0,
-    explanation: "Limited resources require choices."
+    explanation: "Limited resources force choices, illustrating scarcity and choice."
   }
+
+
+
+
+
+
+
+
+
+
 ];
+
 
 /* ===============================
    SETUP STATE
@@ -1337,12 +1717,24 @@ function showResults() {
       `;
     });
 
+    const showExplanation = !isCorrect && q.explanation;
+    const explanationHTML = showExplanation ? `
+      <div class="r-explanation">
+        <div class="r-explanation-icon">💡</div>
+        <div class="r-explanation-body">
+          <div class="r-explanation-label">Explanation</div>
+          <div class="r-explanation-text">${q.explanation}</div>
+        </div>
+      </div>
+    ` : '';
+
     card.innerHTML = `
       <div class="r-q-header">
         <div class="r-q-text">${i + 1}. ${q.text}</div>
         <div class="r-badge ${badgeCls}">${badgeText}</div>
       </div>
       <div class="r-options">${optsHTML}</div>
+      ${explanationHTML}
     `;
 
     container.appendChild(card);
